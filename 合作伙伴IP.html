@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>合作伙伴 · IP形象设计师提示词生成器-古月AI智能体</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Microsoft YaHei";
+}
+
+body{
+
+padding:40px;
+
+background:linear-gradient(135deg,#141e30,#243b55,#4e54c8,#8f94fb,#00c6ff);
+background-size:400% 400%;
+animation:bgmove 16s infinite;
+
+color:white;
+
+}
+
+@keyframes bgmove{
+
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+.title{
+
+font-size:34px;
+font-weight:800;
+text-align:center;
+margin-bottom:40px;
+
+background:linear-gradient(90deg,#ffffff,#8be9ff);
+-webkit-background-clip:text;
+color:transparent;
+
+}
+
+.panel{
+
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(18px);
+
+padding:30px;
+
+border-radius:16px;
+
+box-shadow:0 20px 40px rgba(0,0,0,0.4);
+
+margin-bottom:40px;
+
+}
+
+input{
+
+width:100%;
+padding:14px;
+
+border-radius:10px;
+
+border:none;
+
+margin-top:10px;
+margin-bottom:20px;
+
+font-size:15px;
+
+}
+
+button{
+
+width:100%;
+padding:14px;
+
+border:none;
+border-radius:10px;
+
+font-size:16px;
+font-weight:700;
+
+cursor:pointer;
+
+background:linear-gradient(135deg,#6c63ff,#00c9a7);
+color:white;
+
+transition:0.3s;
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+
+}
+
+.results{
+
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
+gap:20px;
+
+}
+
+.card{
+
+background:rgba(255,255,255,0.12);
+backdrop-filter:blur(10px);
+
+padding:20px;
+
+border-radius:14px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+transition:0.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-6px);
+box-shadow:0 20px 50px rgba(0,0,0,0.5);
+
+}
+
+.cardTitle{
+
+font-weight:700;
+margin-bottom:10px;
+color:#8be9ff;
+
+}
+
+.prompt{
+
+white-space:pre-wrap;
+line-height:1.6;
+font-size:14px;
+
+}
+
+.copy{
+
+margin-top:12px;
+
+padding:8px 14px;
+
+border:none;
+border-radius:8px;
+
+background:#6c63ff;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="title">
+合作伙伴 · IP形象设计师提示词生成器-古月AI智能体
+</div>
+
+<div class="panel">
+
+输入品牌IP名称：
+
+<input id="name" placeholder="例如：小鹿咖咖 / 星链猫 / 金融守护狮">
+
+输入品牌属性或行业：
+
+<input id="industry" placeholder="例如：咖啡品牌 / 金融服务 / 互联网科技">
+
+<button onclick="create()">生成20组AI提示词</button>
+
+</div>
+
+<div id="list" class="results"></div>
+
+</div>
+
+
+<script>
+
+function rand(arr){
+return arr[Math.floor(Math.random()*arr.length)]
+}
+
+const style=[
+
+"C4D OC渲染风格",
+"高质量3D品牌IP渲染",
+"商业品牌IP设计风格",
+"现代品牌吉祥物设计",
+"高级品牌IP造型设计"
+
+]
+
+const color=[
+
+"品牌主色统一",
+"高识别度品牌配色",
+"VI规范配色",
+"鲜明品牌色彩",
+"商业品牌色系统"
+
+]
+
+const trait=[
+
+"造型简约线条流畅",
+"形象亲和具有品牌辨识度",
+"造型圆润可爱商业化强",
+"品牌符号化设计语言",
+"具有延展性的IP形象结构"
+
+]
+
+function create(){
+
+let name=document.getElementById("name").value
+let industry=document.getElementById("industry").value
+
+if(name=="" || industry==""){
+alert("请输入IP名称和行业")
+return
+}
+
+let list=document.getElementById("list")
+
+list.innerHTML=""
+
+for(let i=1;i<=20;i++){
+
+let prompt=
+
+`${name}品牌IP形象设计，行业：${industry}，
+
+品牌IP核心定义为品牌具象符号化，承载品牌理念与价值观，
+
+设计风格：${rand(style)}，
+
+造型特点：${rand(trait)}，
+
+色彩设计：${rand(color)}，
+
+三排三视图构图：
+
+第一排：C4D OC渲染风格彩色三视图（正面、侧面、背面），高质量商业IP角色渲染，
+
+第二排：彩色手绘矢量插画三视图（正面、侧面、背面），扁平化品牌插画风格，
+
+第三排：黑白线稿三视图（正面、侧面、背面），线稿干净清晰，与上方造型完全一致，
+
+整体画面要求：三排九视图结构统一，角色比例一致，不改变造型材质与颜色，背景纯色或轻纹理，突出IP主体，商业品牌IP设计，高清视觉效果，适用于即梦AI生成`
+
+let card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+
+<div class="cardTitle">提示词 ${i}</div>
+
+<div class="prompt">${prompt}</div>
+
+<button class="copy" onclick="copy(this)">复制提示词</button>
+
+`
+
+list.appendChild(card)
+
+}
+
+}
+
+function copy(btn){
+
+let text=btn.previousElementSibling.innerText
+
+navigator.clipboard.writeText(text)
+
+btn.innerText="已复制"
+
+setTimeout(()=>{
+btn.innerText="复制提示词"
+},1500)
+
+}
+
+</script>
+
+</body>
+
+</html>
