@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 <meta charset="UTF-8">
-<title>合作伙伴 · IP形象设计师提示词生成器-古月AI智能体</title>
+<title>合作伙伴 · 品牌IP形象生成器-古月AI智能体</title>
 
 <style>
 
@@ -17,9 +17,9 @@ body{
 
 padding:40px;
 
-background:linear-gradient(135deg,#141e30,#243b55,#4e54c8,#8f94fb,#00c6ff);
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364,#6c63ff);
 background-size:400% 400%;
-animation:bgmove 16s infinite;
+animation:bgmove 18s infinite;
 
 color:white;
 
@@ -98,15 +98,6 @@ cursor:pointer;
 background:linear-gradient(135deg,#6c63ff,#00c9a7);
 color:white;
 
-transition:0.3s;
-
-}
-
-button:hover{
-
-transform:translateY(-3px);
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-
 }
 
 .results{
@@ -127,15 +118,6 @@ padding:20px;
 border-radius:14px;
 
 box-shadow:0 10px 25px rgba(0,0,0,0.3);
-
-transition:0.3s;
-
-}
-
-.card:hover{
-
-transform:translateY(-6px);
-box-shadow:0 20px 50px rgba(0,0,0,0.5);
 
 }
 
@@ -181,20 +163,20 @@ cursor:pointer;
 <div class="container">
 
 <div class="title">
-合作伙伴 · IP形象设计师提示词生成器-古月AI智能体
+合作伙伴 · 品牌IP形象生成器-古月AI智能体
 </div>
 
 <div class="panel">
 
 输入品牌IP名称：
 
-<input id="name" placeholder="例如：小鹿咖咖 / 星链猫 / 金融守护狮">
+<input id="name" placeholder="例如：星链猫">
 
-输入品牌属性或行业：
+输入品牌行业：
 
-<input id="industry" placeholder="例如：咖啡品牌 / 金融服务 / 互联网科技">
+<input id="industry" placeholder="例如：互联网科技 / 咖啡品牌 / 金融服务">
 
-<button onclick="create()">生成20组AI提示词</button>
+<button onclick="create()">生成20组IP设计方案</button>
 
 </div>
 
@@ -209,34 +191,29 @@ function rand(arr){
 return arr[Math.floor(Math.random()*arr.length)]
 }
 
-const style=[
+const animals=[
+"猫","狐狸","小熊","小鹿","企鹅","柴犬","小龙","松鼠","机器人","小狮子"
+]
 
-"C4D OC渲染风格",
-"高质量3D品牌IP渲染",
-"商业品牌IP设计风格",
-"现代品牌吉祥物设计",
-"高级品牌IP造型设计"
+const personality=[
+"聪明活跃","温暖亲和","勇敢探索","沉稳可靠","活泼可爱","科技理性","年轻潮流"
+]
 
+const clothes=[
+"科技连帽外套","宇航服","运动卫衣","商务西装","探险背带裤",
+"飞行员夹克","实验室白大褂","街头潮流夹克","未来战术服","骑士盔甲风格服装"
+]
+
+const accessory=[
+"智能护目镜","耳机","科技背包","徽章","能量核心","围巾","腕表","机械手套","科技手环"
+]
+
+const symbol=[
+"胸口品牌LOGO徽章","能量核心LOGO","肩章品牌标志","发光品牌图腾","品牌字母符号"
 ]
 
 const color=[
-
-"品牌主色统一",
-"高识别度品牌配色",
-"VI规范配色",
-"鲜明品牌色彩",
-"商业品牌色系统"
-
-]
-
-const trait=[
-
-"造型简约线条流畅",
-"形象亲和具有品牌辨识度",
-"造型圆润可爱商业化强",
-"品牌符号化设计语言",
-"具有延展性的IP形象结构"
-
+"蓝紫科技渐变","红金品牌配色","黑金高级配色","橙黄活力配色","青蓝互联网色","紫粉潮流配色"
 ]
 
 function create(){
@@ -244,51 +221,56 @@ function create(){
 let name=document.getElementById("name").value
 let industry=document.getElementById("industry").value
 
-if(name=="" || industry==""){
-alert("请输入IP名称和行业")
+if(name==""||industry==""){
+alert("请输入完整信息")
 return
 }
 
 let list=document.getElementById("list")
-
 list.innerHTML=""
 
 for(let i=1;i<=20;i++){
 
 let prompt=
 
-`${name}品牌IP形象设计，行业：${industry}，
+`品牌IP名称：${name}
+行业：${industry}
 
-品牌IP核心定义为品牌具象符号化，承载品牌理念与价值观，
+IP设定：${rand(animals)}角色IP
 
-设计风格：${rand(style)}，
+角色气质：${rand(personality)}
 
-造型特点：${rand(trait)}，
+服装设计：${rand(clothes)}
 
-色彩设计：${rand(color)}，
+配饰设计：${rand(accessory)}
 
-三排三视图构图：
+品牌符号：${rand(symbol)}
 
-第一排：C4D OC渲染风格彩色三视图（正面、侧面、背面），高质量商业IP角色渲染，
+配色系统：${rand(color)}
 
-第二排：彩色手绘矢量插画三视图（正面、侧面、背面），扁平化品牌插画风格，
+品牌IP核心定义为品牌具象符号化，承载品牌理念与价值观，用于品牌识别与情感连接。
 
-第三排：黑白线稿三视图（正面、侧面、背面），线稿干净清晰，与上方造型完全一致，
+画面结构：
 
-整体画面要求：三排九视图结构统一，角色比例一致，不改变造型材质与颜色，背景纯色或轻纹理，突出IP主体，商业品牌IP设计，高清视觉效果，适用于即梦AI生成`
+第一排
+C4D OC渲染彩色三视图（正面、侧面、背面）
+
+第二排
+彩色矢量插画三视图（正面、侧面、背面）
+
+第三排
+黑白线稿三视图（正面、侧面、背面）
+
+三排造型保持完全一致，比例统一，背景纯色或轻纹理，突出IP主体，高质量商业IP设计效果图，适用于即梦AI生成。`
 
 let card=document.createElement("div")
 
 card.className="card"
 
 card.innerHTML=`
-
-<div class="cardTitle">提示词 ${i}</div>
-
+<div class="cardTitle">IP设计方案 ${i}</div>
 <div class="prompt">${prompt}</div>
-
 <button class="copy" onclick="copy(this)">复制提示词</button>
-
 `
 
 list.appendChild(card)
