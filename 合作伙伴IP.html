@@ -1,252 +1,435 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-<meta charset="UTF-8">
-<title> 品牌IP形象生成器-古月AI智能体</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>品牌IP形象生成器 - 古月AI智能体</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
 
-<style>
+        body {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #6c63ff);
+            background-size: 400% 400%;
+            animation: bgmove 18s infinite;
+            color: white;
+            min-height: 100vh;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Microsoft YaHei";
-}
+        @keyframes bgmove {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
 
-body{
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
 
-padding:40px;
+        .title {
+            font-size: clamp(24px, 5vw, 34px);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 40px;
+            background: linear-gradient(90deg, #ffffff, #8be9ff);
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: 1px;
+        }
 
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364,#6c63ff);
-background-size:400% 400%;
-animation:bgmove 18s infinite;
+        .panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
 
-color:white;
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-}
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #8be9ff;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-@keyframes bgmove{
+        .input-group label .lock-icon {
+            font-size: 16px;
+        }
 
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            font-size: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            transition: all 0.3s ease;
+            outline: none;
+        }
 
-}
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
 
-.container{
-max-width:1200px;
-margin:auto;
-}
+        input:focus {
+            border-color: #6c63ff;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 0 4px rgba(108, 99, 255, 0.2);
+        }
 
-.title{
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
 
-font-size:34px;
-font-weight:800;
-text-align:center;
-margin-bottom:40px;
+        button {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
 
-background:linear-gradient(90deg,#ffffff,#8be9ff);
--webkit-background-clip:text;
-color:transparent;
+        .btn-primary {
+            flex: 1;
+            min-width: 200px;
+            background: linear-gradient(135deg, #6c63ff, #00c9a7);
+            color: white;
+        }
 
-}
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(108, 99, 255, 0.4);
+        }
 
-.panel{
+        .btn-primary:active {
+            transform: translateY(0);
+        }
 
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(18px);
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
 
-padding:30px;
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
 
-border-radius:16px;
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
+            gap: 20px;
+        }
 
-box-shadow:0 20px 40px rgba(0,0,0,0.4);
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardIn 0.4s ease forwards;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-margin-bottom:40px;
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 35px rgba(0, 0, 0, 0.5);
+        }
 
-}
+        @keyframes cardIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-input{
+        .cardTitle {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #8be9ff;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
 
-width:100%;
-padding:14px;
+        .cardTitle .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            background: rgba(108, 99, 255, 0.4);
+            color: #fff;
+            font-weight: 500;
+        }
 
-border-radius:10px;
+        .prompt {
+            white-space: pre-wrap;
+            line-height: 1.7;
+            font-size: 13.5px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 14px;
+            border-radius: 8px;
+            max-height: 350px;
+            overflow-y: auto;
+            word-break: break-word;
+        }
 
-border:none;
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
 
-margin-top:10px;
-margin-bottom:20px;
+        .copy {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #6c63ff;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.25s ease;
+        }
 
-font-size:15px;
+        .copy:hover {
+            background: #5a52e0;
+        }
 
-}
+        .copy.copied {
+            background: #00c9a7 !important;
+        }
 
-button{
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00c9a7;
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            z-index: 999;
+            opacity: 0;
+            animation: toastIn 0.4s ease forwards, toastOut 0.4s ease 1.5s forwards;
+            pointer-events: none;
+            white-space: nowrap;
+        }
 
-width:100%;
-padding:14px;
+        @keyframes toastIn {
+            to {
+                opacity: 1;
+                top: 30px;
+            }
+        }
+        @keyframes toastOut {
+            to {
+                opacity: 0;
+                top: 0;
+            }
+        }
 
-border:none;
-border-radius:10px;
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+        }
 
-font-size:16px;
-font-weight:700;
+        .prompt::-webkit-scrollbar {
+            width: 5px;
+        }
+        .prompt::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .prompt::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
 
-cursor:pointer;
-
-background:linear-gradient(135deg,#6c63ff,#00c9a7);
-color:white;
-
-}
-
-.results{
-
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(420px,1fr));
-gap:20px;
-
-}
-
-.card{
-
-background:rgba(255,255,255,0.12);
-backdrop-filter:blur(10px);
-
-padding:20px;
-
-border-radius:14px;
-
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
-
-}
-
-.cardTitle{
-
-font-weight:700;
-margin-bottom:10px;
-color:#8be9ff;
-
-}
-
-.prompt{
-
-white-space:pre-wrap;
-line-height:1.6;
-font-size:14px;
-
-}
-
-.copy{
-
-margin-top:12px;
-
-padding:8px 14px;
-
-border:none;
-border-radius:8px;
-
-background:#6c63ff;
-
-color:white;
-
-cursor:pointer;
-
-}
-
-</style>
-
+        @media (max-width: 500px) {
+            body {
+                padding: 20px 10px;
+            }
+            .panel {
+                padding: 20px;
+            }
+            .results {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
+    <div class="container">
+        <div class="title">品牌IP形象生成器 - 古月AI智能体</div>
 
-<div class="title">
-品牌IP形象生成器-古月AI智能体
-</div>
+        <div class="panel">
+            <div class="input-group">
+                <label>🎯 品牌IP名称</label>
+                <input id="name" placeholder="例如：星链猫、潮玩熊、云豆">
+            </div>
+            <div class="input-group">
+                <label>🏭 品牌行业</label>
+                <input id="industry" placeholder="例如：互联网科技 / 咖啡品牌 / 金融服务 / 潮牌服饰">
+            </div>
+            <div class="input-group">
+                <label><span class="lock-icon">🔒</span> TEXT LOCK（锁定文本，必须原样出现在每条提示词中）</label>
+                <input id="textLock" placeholder="例如：高质感3D渲染，8K分辨率，C4D OC渲染器">
+            </div>
+            <div class="btn-row">
+                <button class="btn-primary" onclick="generate()">✨ 生成20组IP设计方案</button>
+                <button class="btn-secondary" onclick="clearResults()">🗑 清空结果</button>
+                <button class="btn-secondary" onclick="exportAll()">📋 一键导出全部</button>
+            </div>
+        </div>
 
-<div class="panel">
+        <div id="list" class="results">
+            <div class="empty-state">👆 输入品牌信息与锁定文本（可选），点击生成按钮开始创作</div>
+        </div>
+    </div>
 
-输入品牌IP名称：
+    <script>
+        // ============ 数据配置 ============
+        const DATA = {
+            animals: [
+                { value: "猫", tags: ["温暖", "亲和"] },
+                { value: "狐狸", tags: ["聪明", "潮流"] },
+                { value: "小熊", tags: ["温暖", "可靠"] },
+                { value: "小鹿", tags: ["优雅", "自然"] },
+                { value: "企鹅", tags: ["可爱", "可靠"] },
+                { value: "柴犬", tags: ["温暖", "忠诚"] },
+                { value: "小龙", tags: ["勇敢", "力量"] },
+                { value: "松鼠", tags: ["活泼", "灵动"] },
+                { value: "机器人", tags: ["科技", "未来"] },
+                { value: "小狮子", tags: ["勇敢", "领导力"] },
+            ],
+            personality: ["聪明活跃", "温暖亲和", "勇敢探索", "沉稳可靠", "活泼可爱", "科技理性", "年轻潮流"],
+            clothes: [
+                "科技连帽外套", "宇航服", "运动卫衣", "商务西装", "探险背带裤",
+                "飞行员夹克", "实验室白大褂", "街头潮流夹克", "未来战术服", "骑士盔甲风格服装"
+            ],
+            accessory: [
+                "智能护目镜", "耳机", "科技背包", "徽章", "能量核心",
+                "围巾", "腕表", "机械手套", "科技手环"
+            ],
+            symbol: [
+                "胸口品牌LOGO徽章", "能量核心LOGO", "肩章品牌标志", "发光品牌图腾", "品牌字母符号"
+            ],
+            color: [
+                "蓝紫科技渐变", "红金品牌配色", "黑金高级配色", "橙黄活力配色", "青蓝互联网色", "紫粉潮流配色"
+            ],
+            industryMap: {
+                "科技": { boost: ["机器人", "科技理性", "科技连帽外套", "智能护目镜", "蓝紫科技渐变", "青蓝互联网色"], weight: 3 },
+                "互联网": { boost: ["机器人", "科技理性", "科技连帽外套", "智能护目镜", "蓝紫科技渐变", "青蓝互联网色"], weight: 3 },
+                "金融": { boost: ["小狮子", "沉稳可靠", "商务西装", "腕表", "黑金高级配色"], weight: 3 },
+                "银行": { boost: ["小狮子", "沉稳可靠", "商务西装", "腕表", "黑金高级配色"], weight: 3 },
+                "咖啡": { boost: ["小熊", "温暖亲和", "运动卫衣", "围巾", "橙黄活力配色"], weight: 3 },
+                "餐饮": { boost: ["小熊", "温暖亲和", "运动卫衣", "围巾", "橙黄活力配色"], weight: 3 },
+                "潮牌": { boost: ["狐狸", "年轻潮流", "街头潮流夹克", "耳机", "紫粉潮流配色"], weight: 3 },
+                "服饰": { boost: ["狐狸", "年轻潮流", "街头潮流夹克", "耳机", "紫粉潮流配色"], weight: 3 },
+                "运动": { boost: ["柴犬", "勇敢探索", "运动卫衣", "科技手环", "橙黄活力配色"], weight: 3 },
+                "教育": { boost: ["猫", "聪明活跃", "探险背带裤", "科技背包", "青蓝互联网色"], weight: 2 },
+                "医疗": { boost: ["小鹿", "沉稳可靠", "实验室白大褂", "徽章", "青蓝互联网色"], weight: 2 },
+            }
+        };
 
-<input id="name" placeholder="例如：星链猫">
+        // ============ 工具函数 ============
+        function rand(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
 
-输入品牌行业：
+        function weightedRand(arr, boostList = [], weight = 3) {
+            const pool = [];
+            arr.forEach(item => {
+                const rawItem = typeof item === 'object' ? item.value : item;
+                const match = boostList.some(b =>
+                    rawItem.includes(b) || b.includes(rawItem) ||
+                    (typeof item === 'object' && item.tags && item.tags.some(t => b.includes(t)))
+                );
+                const times = match ? weight : 1;
+                for (let i = 0; i < times; i++) pool.push(rawItem);
+            });
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
 
-<input id="industry" placeholder="例如：互联网科技 / 咖啡品牌 / 金融服务">
+        function getBoost(industry) {
+            const lower = industry.toLowerCase();
+            for (const [key, val] of Object.entries(DATA.industryMap)) {
+                if (lower.includes(key.toLowerCase())) return val;
+            }
+            return null;
+        }
 
-<button onclick="create()">生成20组IP设计方案</button>
+        // ============ 生成单条方案 (不包含锁定文本) ============
+        function generateOneCore(name, industry) {
+            const boost = getBoost(industry);
+            const boostList = boost ? boost.boost : [];
+            const w = boost ? boost.weight : 1;
 
-</div>
+            const animal = weightedRand(DATA.animals, boostList, w);
+            const personality = weightedRand(DATA.personality, boostList, w);
+            const clothes = weightedRand(DATA.clothes, boostList, w);
+            const accessory = weightedRand(DATA.accessory, boostList, w);
+            const symbol = rand(DATA.symbol);
+            const color = weightedRand(DATA.color, boostList, w);
 
-<div id="list" class="results"></div>
-
-</div>
-
-
-<script>
-
-function rand(arr){
-return arr[Math.floor(Math.random()*arr.length)]
-}
-
-const animals=[
-"猫","狐狸","小熊","小鹿","企鹅","柴犬","小龙","松鼠","机器人","小狮子"
-]
-
-const personality=[
-"聪明活跃","温暖亲和","勇敢探索","沉稳可靠","活泼可爱","科技理性","年轻潮流"
-]
-
-const clothes=[
-"科技连帽外套","宇航服","运动卫衣","商务西装","探险背带裤",
-"飞行员夹克","实验室白大褂","街头潮流夹克","未来战术服","骑士盔甲风格服装"
-]
-
-const accessory=[
-"智能护目镜","耳机","科技背包","徽章","能量核心","围巾","腕表","机械手套","科技手环"
-]
-
-const symbol=[
-"胸口品牌LOGO徽章","能量核心LOGO","肩章品牌标志","发光品牌图腾","品牌字母符号"
-]
-
-const color=[
-"蓝紫科技渐变","红金品牌配色","黑金高级配色","橙黄活力配色","青蓝互联网色","紫粉潮流配色"
-]
-
-function create(){
-
-let name=document.getElementById("name").value
-let industry=document.getElementById("industry").value
-
-if(name==""||industry==""){
-alert("请输入完整信息")
-return
-}
-
-let list=document.getElementById("list")
-list.innerHTML=""
-
-for(let i=1;i<=20;i++){
-
-let prompt=
-
-`品牌IP名称：${name}
+            const promptBody = `品牌IP名称：${name}
 行业：${industry}
 
-IP设定：${rand(animals)}角色IP
+IP设定：${animal}角色IP
 
-角色气质：${rand(personality)}
+角色气质：${personality}
 
-服装设计：${rand(clothes)}
+服装设计：${clothes}
 
-配饰设计：${rand(accessory)}
+配饰设计：${accessory}
 
-品牌符号：${rand(symbol)}
+品牌符号：${symbol}
 
-配色系统：${rand(color)}
+配色系统：${color}
 
 品牌IP核心定义为品牌具象符号化，承载品牌理念与价值观，用于品牌识别与情感连接。
 
@@ -261,40 +444,155 @@ C4D OC渲染彩色三视图（正面、侧面、背面）
 第三排
 黑白线稿三视图（正面、侧面、背面）
 
-三排造型保持完全一致，比例统一，背景纯色或轻纹理，突出IP主体，高质量商业IP设计效果图，适用于即梦AI生成。`
+三排造型保持完全一致，比例统一，背景纯色或轻纹理，突出IP主体，高质量商业IP设计效果图，适用于即梦AI生成。`;
 
-let card=document.createElement("div")
+            return {
+                animal,
+                personality,
+                clothes,
+                accessory,
+                symbol,
+                color,
+                promptBody,
+                // 指纹用于去重
+                fingerprint: `${animal}|${personality}|${clothes}|${accessory}|${symbol}|${color}`
+            };
+        }
 
-card.className="card"
+        // ============ 批量生成20组不重复方案 ============
+        function generateAll(name, industry, textLock, count = 20) {
+            const results = [];
+            const fingerprints = new Set();
+            const maxAttempts = count * 50; // 防止死循环
 
-card.innerHTML=`
-<div class="cardTitle">IP设计方案 ${i}</div>
-<div class="prompt">${prompt}</div>
-<button class="copy" onclick="copy(this)">复制提示词</button>
-`
+            for (let i = 1; i <= count; i++) {
+                let attempts = 0;
+                let core = null;
+                do {
+                    core = generateOneCore(name, industry);
+                    attempts++;
+                    if (attempts > maxAttempts) break;
+                } while (fingerprints.has(core.fingerprint));
 
-list.appendChild(card)
+                fingerprints.add(core.fingerprint);
 
-}
+                // 组装最终 prompt，附加 TEXT LOCK（如果存在）
+                let finalPrompt = core.promptBody;
+                if (textLock && textLock.trim() !== "") {
+                    // 锁定文本必须逐字完全一致，不进行任何改动
+                    finalPrompt += `\n\n【TEXT LOCK】\n${textLock}`;
+                }
 
-}
+                results.push({
+                    index: i,
+                    animal: core.animal,
+                    personality: core.personality,
+                    clothes: core.clothes,
+                    accessory: core.accessory,
+                    symbol: core.symbol,
+                    color: core.color,
+                    prompt: finalPrompt
+                });
+            }
+            return results;
+        }
 
-function copy(btn){
+        // ============ 渲染卡片 ============
+        function renderCards(dataList) {
+            const list = document.getElementById("list");
+            list.innerHTML = "";
 
-let text=btn.previousElementSibling.innerText
+            dataList.forEach((item, idx) => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.style.animationDelay = `${idx * 0.04}s`;
 
-navigator.clipboard.writeText(text)
+                card.innerHTML = `
+                    <div class="cardTitle">
+                        IP设计方案 ${item.index}
+                        <span class="badge">${item.animal}</span>
+                    </div>
+                    <div class="prompt">${item.prompt}</div>
+                    <div class="card-actions">
+                        <button class="copy" onclick="copyPrompt(this, event)">📋 复制提示词</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
 
-btn.innerText="已复制"
+        // ============ 主流程 ============
+        function generate() {
+            const name = document.getElementById("name").value.trim();
+            const industry = document.getElementById("industry").value.trim();
+            const textLock = document.getElementById("textLock").value; // 保持原始输入，不允许 trim 改变内容
 
-setTimeout(()=>{
-btn.innerText="复制提示词"
-},1500)
+            if (!name || !industry) {
+                showToast("⚠️ 请输入品牌IP名称和行业");
+                return;
+            }
 
-}
+            const dataList = generateAll(name, industry, textLock, 20);
+            renderCards(dataList);
+            showToast(`✅ 已生成 ${dataList.length} 组不重复IP方案`);
+            document.getElementById("list").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
 
-</script>
+        function clearResults() {
+            const list = document.getElementById("list");
+            list.innerHTML = '<div class="empty-state">👆 输入品牌信息与锁定文本（可选），点击生成按钮开始创作</div>';
+            showToast("🗑 结果已清空");
+        }
 
+        function exportAll() {
+            const prompts = document.querySelectorAll(".prompt");
+            if (prompts.length === 0) {
+                showToast("⚠️ 暂无内容可导出");
+                return;
+            }
+            let fullText = "";
+            prompts.forEach((p, i) => {
+                fullText += `========== IP设计方案 ${i + 1} ==========\n${p.innerText}\n\n`;
+            });
+            navigator.clipboard.writeText(fullText).then(() => {
+                showToast("📋 全部20组已复制到剪贴板");
+            }).catch(() => {
+                showToast("⚠️ 复制失败，请手动复制");
+            });
+        }
+
+        function copyPrompt(btn, event) {
+            event.stopPropagation();
+            const promptEl = btn.closest(".card").querySelector(".prompt");
+            const text = promptEl.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                btn.classList.add("copied");
+                btn.innerText = "✅ 已复制";
+                setTimeout(() => {
+                    btn.classList.remove("copied");
+                    btn.innerText = "📋 复制提示词";
+                }, 1500);
+            });
+        }
+
+        function showToast(msg) {
+            const existing = document.querySelector(".toast");
+            if (existing) existing.remove();
+
+            const toast = document.createElement("div");
+            toast.className = "toast";
+            toast.innerText = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        document.addEventListener("keydown", function(e) {
+            if (e.key === "Enter" && document.activeElement.tagName === "INPUT") {
+                e.preventDefault();
+                generate();
+            }
+        });
+    </script>
 </body>
-
 </html>
